@@ -1,0 +1,87 @@
+---
+title: "HIV Data Analysis Report"
+author: "Birra Bejiga"
+date: "2025-11-02"
+output: word_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r frequency}
+# Load flextable package
+library(flextable)
+ # 1️⃣ Read your data
+hiv <- read.csv("hiv.csv")
+
+# 2️⃣ Create a frequency table
+HIV_status_table <- table(hiv$HIV.status)
+hiv
+flextable::flextable(hiv)
+#3️⃣ Create a percentage table
+HIV_Status_Percent <- 100 * HIV_status_table /sum(HIV_status_table)
+HIV_status_table 
+```
+
+```{r barplot_HIV_status}
+barplot(HIV_Status_Percent)
+```
+
+
+```{r barplot_HIV_status_colered}
+HIV_Status_Table <- table(hiv$HIV.status)
+HIV_Status_Percent <- 100 * HIV_Status_Table / sum(HIV_Status_Table)
+
+
+
+
+bp <- barplot(HIV_Status_Percent,
+main = "HIV/AIDS Prevalence",
+xlab = "HIV Status",
+ylab = "Prevalence (%)",
+col = c("green", "red"),
+ylim = c(0, 100),
+border = "blue",
+density = c(10, 40))
+abline(h=0)
+```
+
+#Bar Plot for HIV Status by Area
+```{r Bar Plot for HIV Status by Area}
+head(hiv)
+# Barplot with grouped bars
+HIV_by_area <- table(hiv$HIV.status, hiv$area)
+# View the table
+print(HIV_by_area)
+# Convert to percentages if needed
+HIV_by_area_percent <- 100*HIV_by_area/sum(HIV_by_area)
+# View the percentages
+print(round(HIV_by_area_percent, 1))
+```
+
+
+```{r Bar Plot for HIV Status by Area_Visualization}
+
+# Assuming HIV_by_area_percent is a table or matrix with percentages
+barplot(HIV_by_area_percent,
+        main = "HIV Status by Residence",   # Title in quotes
+        xlab = "Residence",                 # X-axis label
+        ylab = "Prevalence (%)",            # Y-axis label
+        col = c("green", "red"),            # Colors for bars
+        beside = TRUE,                      # Side-by-side bars
+        ylim = c(0, 50),                    # Y-axis limits
+        xlim = c(1, 8))                     # X-axis limits
+
+# Add horizontal line at y=0
+abline(h = 0)
+legend("topright", c("No","Yes"), fill = c("green","red"), title= "HIV Status")
+HIV_by_area_percent
+text(1.5, 25.5, "23.8%")
+text(2.5,20.0, "19%")
+text(4.5,25.5,"26.1%")
+text(5.5,30.5,"31%")
+
