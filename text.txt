@@ -1,1 +1,4 @@
 StatisticalComputing_Assignement_1
+git --version
+
+
